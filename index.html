@@ -20,6 +20,11 @@
   </div>
 
   <script>
+    // Clear the box when the page loads
+    window.onload = function() {
+      document.getElementById("salePrice").value = "";
+    };
+
     function updateTable() {
       const price = document.getElementById("salePrice").value;
       const area = document.getElementById("resultsArea");
