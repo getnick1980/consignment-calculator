@@ -1,42 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sale Calculator</title>
-  <style>
-    body { font-family: Arial; margin: 20px; }
-    input { padding: 10px; font-size: 18px; width: 200px; }
-    table { margin-top: 20px; border-collapse: collapse; width: 100%; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: right; }
-    th { text-align: left; background: #f0f0f0; }
-  </style>
+<title>Consignment Calculator</title>
+<style>
+body {font-family:Arial,sans-serif;margin:20px;}
+h2 {margin-bottom:5px;}
+input {padding:12px;font-size:18px;width:180px;}
+table {margin-top:20px;border-collapse:collapse;width:100%;max-width:900px;}
+th,td {padding:10px;border:1px solid #ccc;text-align:right;}
+th {text-align:left;background:#f5f5f5;}
+</style>
 </head>
 <body>
-  <h2>Enter Sale Price</h2>
-  <input type="number" id="salePrice" placeholder="Sale amount" oninput="updateTable()" value="100">
+<h2>Enter Sale Price</h2>
+<input type="number" id="salePrice" placeholder="Sale amount" value="100" oninput="updateTable()">
 
-  <h2>Results</h2>
-  <table id="resultsTable"></table>
+<h2>Results</h2>
+<table id="resultsTable"></table>
 
-  <script>
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pub?gid=204546721&single=true&output=csv";
+<script>
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=204546721&single=true";
 
-    async function updateTable() {
-      let price = parseFloat(document.getElementById("salePrice").value) || 0;
-      let csv = await fetch(csvUrl).then(r => r.text());
-      let rows = csv.trim().split("\n").map(row => row.split(","));
-      let headers = rows[0];
-      let html = "<tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr>";
-
-      for (let i = 1; i < rows.length; i++) {
-        let row = rows ;
-        // This assumes your formulas depend on the published snapshot.
-        // If it needs the exact sale price entered, we can tweak this later.
-        html += "<tr>" + row.map(cell => `<td>${cell}</td>`).join("") + "</tr>";
-      }
-      document.getElementById("resultsTable").innerHTML = html;
-    }
-
-    updateTable();
-  </script>
+async function updateTable() {
+  let html = await fetch(url).then(r => r.text());
+  let parser = new DOMParser();
+  let doc = parser.parseFromString(html, "text/html");
+  let table = doc.querySelector("table");
+  if (table) {
+    document.getElementById("resultsTable").innerHTML = table.innerHTML;
+  }
+}
+updateTable();
+</script>
 </body>
 </html>
