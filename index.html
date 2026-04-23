@@ -16,11 +16,10 @@
 
   <div id="resultsArea" class="hidden">
     <h2>Results</h2>
-    <iframe id="sheetFrame" width="100%" height="850px" frameborder="0"></iframe>
+    <iframe id="sheetFrame" width="100%" height="850px" frameborder="0" src=""></iframe>
   </div>
 
   <script>
-    // Clear the box when the page loads
     window.onload = function() {
       document.getElementById("salePrice").value = "";
     };
@@ -32,7 +31,7 @@
       if (price) {
         area.classList.remove("hidden");
         const iframe = document.getElementById("sheetFrame");
-        iframe.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=204546721&single=true&price=" + price;
+        iframe.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=204546721&single=true";
       } else {
         area.classList.add("hidden");
       }
