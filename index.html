@@ -3,22 +3,34 @@
 <head>
   <title>Consignment Calculator</title>
   <style>
-    body { margin: 20px; font-family: Arial, sans-serif; }
-    input { font-size: 18px; padding: 10px; width: 200px; }
-    iframe { width: 100%; height: 800px; border: 2px solid #ccc; margin-top: 20px; }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { margin-bottom: 10px; }
+    input { font-size: 18px; padding: 12px; width: 200px; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
   <h2>Enter Sale Price</h2>
-  <input type="number" id="salePrice" value="100" onchange="sendPrice(this.value)">
+  <input type="number" id="salePrice" placeholder="Enter sale amount" oninput="updateTable()">
 
-  <iframe id="sheet" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=204546721&single=true"></iframe>
+  <div id="resultsArea" class="hidden">
+    <h2>Results</h2>
+    <iframe id="sheetFrame" width="100%" height="850px" frameborder="0"></iframe>
+  </div>
 
   <script>
-    function sendPrice(price) {
-      fetch("https://script.google.com/macros/s/AKfycby5j4wxHRKNLdZmKa_pGL75o9luatK7P4y3NOqFswHV0dOvCWnHCcE35xQDTBfsPD2_/exec?price=" + price);
-      document.getElementById("sheet").src = document.getElementById("sheet").src.split('?')[0] + "?t=" + Date.now();
+    function updateTable() {
+      const price = document.getElementById("salePrice").value;
+      const area = document.getElementById("resultsArea");
+      
+      if (price) {
+        area.classList.remove("hidden");
+        const iframe = document.getElementById("sheetFrame");
+        iframe.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=204546721&single=true&price=" + price;
+      } else {
+        area.classList.add("hidden");
+      }
     }
   </script>
 
