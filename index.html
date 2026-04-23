@@ -1,23 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Consignment Calculator</title>
+  <title>Consignment Fee Calculator</title>
   <style>
-    body { margin:20px; font-family:Arial,sans-serif; }
-    input { font-size:18px; padding:10px; width:180px; }
-    iframe { width:100%; height:850px; border:2px solid #ddd; border-radius:8px; margin-top:20px; }
+    body {font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa;}
+    h1 {color: #2c3e50;}
+    input {padding: 12px; font-size: 20px; width: 200px;}
+    table {margin-top: 30px; border-collapse: collapse; width: 100%; max-width: 1200px;}
+    th, td {padding: 12px; border: 1px solid #ccc; text-align: right;}
+    th {text-align: left; background: #f0f0f0;}
+    tr:nth-child(even) {background: #f9f9f9;}
   </style>
 </head>
 <body>
-  <h2>Sale Price: <input type="number" id="price" value="100" onchange="updatePrice(this.value)"></h2>
-  
-  <iframe id="frame" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=204546721&single=true"></iframe>
+  <h1>Consignment Fee Calculator</h1>
+  <p>Sale Price: <input type="number" id="price" value="100" oninput="updateTable()" style="font-size:18px;"></p>
+
+  <table id="results"></table>
 
   <script>
-    function updatePrice(price) {
-      const iframe = document.getElementById("frame");
-      iframe.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=204546721&single=true&price=" + price;
+    const url = "https://script.google.com/macros/s/AKfycby5j4wxHRKNLdZmKa_pGL75o9luatK7P4y3NOqFswHV0dOvCWnHCcE35xQDTBfsPD2_/exec";
+
+    async function updateTable() {
+      const price = document.getElementById("price").value || 100;
+      const res = await fetch(url + "?price=" + price);
+      const data = await res.json();
+
+      let html = "";
+      data.forEach((row, i) => {
+        html += "<tr>";
+        row.forEach(cell => {
+          html += `<td>${cell}</td>`;
+        });
+        html += "</tr>";
+      });
+      document.getElementById("results").innerHTML = html;
     }
+
+    updateTable();
   </script>
 </body>
 </html>
