@@ -31,16 +31,17 @@
       const salePrice = document.getElementById("salePrice").value;
       const cost = document.getElementById("cost").value;
 
-      if (!salePrice) {
-        document.getElementById("resultsArea").classList.add("hidden");
-        return;
+      const area = document.getElementById("resultsArea");
+
+      if (salePrice && cost) {
+        const url = scriptUrl + "?price=" + salePrice + "&cost=" + cost;
+        await fetch(url);
+
+        area.classList.remove("hidden");
+        document.getElementById("frame").src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + Date.now();
+      } else {
+        area.classList.add("hidden");
       }
-
-      const url = scriptUrl + "?price=" + salePrice + "&cost=" + (cost || 0);
-      await fetch(url);
-
-      document.getElementById("resultsArea").classList.remove("hidden");
-      document.getElementById("frame").src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + Date.now();
     }
   </script>
 </body>
