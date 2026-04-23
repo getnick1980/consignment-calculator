@@ -21,6 +21,7 @@
 
   <script>
     const scriptUrl = "https://script.google.com/macros/s/AKfycbwuHnnBqzKhggiD1COQ9FVPeVfb0o6sMPeITmcuuGui4-bX3SzKDdHblzGACEd7Q2Xh/exec";
+    let refreshTimer;
 
     window.onload = () => {
       document.getElementById("salePrice").value = "";
@@ -30,7 +31,6 @@
     async function updateTable() {
       const salePrice = document.getElementById("salePrice").value;
       const cost = document.getElementById("cost").value;
-
       const area = document.getElementById("resultsArea");
 
       if (salePrice && cost) {
@@ -39,8 +39,14 @@
 
         area.classList.remove("hidden");
         document.getElementById("frame").src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + Date.now();
+
+        clearTimeout(refreshTimer);
+        refreshTimer = setInterval(() => {
+          document.getElementById("frame").src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + Date.now();
+        }, 10000);
       } else {
         area.classList.add("hidden");
+        clearTimeout(refreshTimer);
       }
     }
   </script>
