@@ -1,43 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Consignment Fee Calculator</title>
+  <title>Consignment Calculator</title>
   <style>
-    body {font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa;}
-    h1 {color: #2c3e50;}
-    input {padding: 12px; font-size: 20px; width: 200px;}
-    table {margin-top: 30px; border-collapse: collapse; width: 100%; max-width: 1200px;}
-    th, td {padding: 12px; border: 1px solid #ccc; text-align: right;}
-    th {text-align: left; background: #f0f0f0;}
-    tr:nth-child(even) {background: #f9f9f9;}
+    body { margin: 20px; font-family: Arial, sans-serif; }
+    input { font-size: 18px; padding: 10px; width: 200px; }
+    iframe { width: 100%; height: 800px; border: 2px solid #ccc; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h1>Consignment Fee Calculator</h1>
-  <p>Sale Price: <input type="number" id="price" value="100" oninput="updateTable()" style="font-size:18px;"></p>
 
-  <table id="results"></table>
+  <h2>Enter Sale Price</h2>
+  <input type="number" id="salePrice" value="100" onchange="sendPrice(this.value)">
+
+  <iframe id="sheet" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=204546721&single=true"></iframe>
 
   <script>
-    const url = "https://script.google.com/macros/s/AKfycby5j4wxHRKNLdZmKa_pGL75o9luatK7P4y3NOqFswHV0dOvCWnHCcE35xQDTBfsPD2_/exec";
-
-    async function updateTable() {
-      const price = document.getElementById("price").value || 100;
-      const res = await fetch(url + "?price=" + price);
-      const data = await res.json();
-
-      let html = "";
-      data.forEach((row, i) => {
-        html += "<tr>";
-        row.forEach(cell => {
-          html += `<td>${cell}</td>`;
-        });
-        html += "</tr>";
-      });
-      document.getElementById("results").innerHTML = html;
+    function sendPrice(price) {
+      fetch("https://script.google.com/macros/s/AKfycby5j4wxHRKNLdZmKa_pGL75o9luatK7P4y3NOqFswHV0dOvCWnHCcE35xQDTBfsPD2_/exec?price=" + price);
+      document.getElementById("sheet").src = document.getElementById("sheet").src.split('?')[0] + "?t=" + Date.now();
     }
-
-    updateTable();
   </script>
+
 </body>
 </html>
