@@ -20,7 +20,7 @@
   </div>
 
   <script>
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbwuHnnBqzKhggiD1COQ9FVPeVfb0o6sMPeITmcuuGui4-bX3SzKDdHblzGACEd7Q2Xh/exec";
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbzxITQHtRyWMZOkttQ7CqJj_cEqUYxUGr-wLwFXGFYG6Hp0mjz6mTebfxcpD3zbQ1aF/exec";
 
     window.onload = () => {
       document.getElementById("salePrice").value = "";
@@ -31,12 +31,11 @@
       const sale = document.getElementById("salePrice").value;
       const cost = document.getElementById("cost").value;
 
-      if (sale && cost) {
-        await fetch(scriptUrl + "?price=" + sale + "&cost=" + cost);
+      if (sale) {
+        await fetch(scriptUrl + "?price=" + sale + "&cost=" + (cost || 0));
 
-        const frame = document.getElementById("frame");
         const timestamp = Date.now();
-        frame.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + timestamp;
+        document.getElementById("frame").src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + timestamp;
 
         document.getElementById("resultsArea").classList.remove("hidden");
       } else {
