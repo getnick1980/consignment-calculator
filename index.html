@@ -28,6 +28,8 @@
       let table = doc.querySelector("table");
       if (table) {
         document.getElementById("resultsTable").innerHTML = table.innerHTML;
+      } else {
+        document.getElementById("resultsTable").innerHTML = "<tr><td>Could not load table. Try refreshing.</td></tr>";
       }
     }
     updateTable();
