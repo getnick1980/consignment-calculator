@@ -4,39 +4,29 @@
   <title>Consignment Calculator</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
-    h2 { margin-bottom: 10px; }
     input { font-size: 18px; padding: 12px; width: 200px; }
-    .hidden { display: none; }
+    iframe { width: 100%; height: 900px; border: none; margin-top: 20px; }
   </style>
 </head>
 <body>
 
   <h2>Enter Sale Price</h2>
-  <input type="number" id="salePrice" placeholder="Enter sale amount" oninput="updateTable()">
+  <input type="number" id="salePrice" placeholder="Enter sale amount" oninput="update()">
 
-  <div id="resultsArea" class="hidden">
-    <h2>Results</h2>
-    <iframe id="sheetFrame" width="100%" height="850px" frameborder="0"></iframe>
-  </div>
+  <iframe id="frame" src=""></iframe>
 
   <script>
-    window.onload = function() {
-      document.getElementById("salePrice").value = "";
-    };
-
-    function updateTable() {
-      const price = document.getElementById("salePrice").value;
-      const area = document.getElementById("resultsArea");
+    function update() {
+      let price = document.getElementById("salePrice").value;
+      let frame = document.getElementById("frame");
       
       if (price) {
-        area.classList.remove("hidden");
-        const iframe = document.getElementById("sheetFrame");
-        iframe.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true";
+        frame.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true";
       } else {
-        area.classList.add("hidden");
+        frame.src = "";
       }
     }
   </script>
 
 </body>
-</html
+</html>
