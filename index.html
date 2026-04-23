@@ -4,14 +4,15 @@
   <title>Consignment Calculator</title>
   <style>
     body {font-family:Arial,sans-serif;margin:20px;}
-    input {font-size:18px;padding:12px;width:200px;}
+    input {font-size:18px;padding:12px;width:200px;margin-right:15px;}
     .hidden {display:none;}
   </style>
 </head>
 <body>
 
   <h2>Enter Sale Price</h2>
-  <input type="number" id="salePrice" placeholder="Enter sale amount" oninput="updateTable()">
+  <input type="number" id="salePrice" placeholder="Sale price" oninput="updateTable()">
+  <input type="number" id="cost" placeholder="Cost" oninput="updateTable()">
 
   <div id="resultsArea" class="hidden">
     <h2>Results</h2>
@@ -21,16 +22,22 @@
   <script>
     const scriptUrl = "https://script.google.com/macros/s/AKfycbzBcqOvcb_DtfzibcXUsjCejc9Zpl-quF5cfIJWe5QvSxS6WHDJ1XGmVrH5YGe800k7/exec";
 
-    window.onload = () => document.getElementById("salePrice").value = "";
+    window.onload = () => {
+      document.getElementById("salePrice").value = "";
+      document.getElementById("cost").value = "";
+    };
 
     async function updateTable() {
-      let price = document.getElementById("salePrice").value;
-      if (!price) {
+      const salePrice = document.getElementById("salePrice").value;
+      const cost = document.getElementById("cost").value;
+
+      if (!salePrice) {
         document.getElementById("resultsArea").classList.add("hidden");
         return;
       }
 
-      await fetch(scriptUrl + "?price=" + price);
+      const url = scriptUrl + "?price=" + salePrice + "&cost=" + (cost || 0);
+      await fetch(url);
 
       document.getElementById("resultsArea").classList.remove("hidden");
       document.getElementById("frame").src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + Date.now();
