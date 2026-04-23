@@ -3,13 +3,14 @@
 <head>
   <title>Consignment Calculator</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
+    body { font-family: Arial, sans-serif; margin: 20px; }
     h1 { color: #333; }
     input { padding: 12px; font-size: 20px; width: 200px; }
     table { margin-top: 30px; border-collapse: collapse; width: 100%; max-width: 1100px; }
     th, td { padding: 12px; border: 1px solid #ddd; text-align: right; }
     th { text-align: left; background: #f0f0f0; }
     tr:nth-child(even) { background: #f9f9f9; }
+    .percent { text-align: center; }
   </style>
 </head>
 <body>
@@ -25,27 +26,21 @@
       const price = document.getElementById("price").value || 100;
       const url = `${scriptURL}?price=${price}`;
       
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        
-        let html = "<tr>";
-        const headers = ["Platform","Fee","Net Payout","Margin","Profit"]; // update these if needed
-        headers.forEach(h => html += `<th>${h}</th>`);
+      const res = await fetch(url);
+      const data = await res.json();
+      
+      let html = "<tr><th>Platform</th><th>Fee</th><th>Net Payout</th><th>Margin</th><th>Profit/Loss</th></tr>";
+      
+      data.slice(1).forEach(row => {
+        html += "<tr>";
+        html += `<td>${row[0]}</td>`;                    // Platform name
+        html += `<td>$${parseFloat(row[2 3]||0).toFixed(2)}</td>`;   // Net
+        html += `<td class="percent">${(parseFloat(row[4 5]||0).toFixed(2)}</td>`;   // Profit
         html += "</tr>";
-        
-        data.slice(1).forEach(row => {
-          html += "<tr>";
-          row.forEach(cell => html += `<td>${cell}</td>`);
-          html += "</tr>";
-        });
-        
-        document.getElementById("table").innerHTML = html;
-      } catch(e) {
-        document.getElementById("table").innerHTML = "<tr><td colspan='5'>Loading...</td></tr>";
-      }
+      });
+      
+      document.getElementById("table").innerHTML = html;
     }
-
     update();
   </script>
 </body>
