@@ -19,16 +19,30 @@
   <script>
     const scriptUrl = "https://script.google.com/macros/s/AKfycbzxITQHtRyWMZOkttQ7CqJj_cEqUYxUGr-wLwFXGFYG6Hp0mjz6mTebfxcpD3zbQ1aF/exec";
 
+    // Load saved values when page opens
+    window.onload = function() {
+      const savedSale = localStorage.getItem("salePrice") || "";
+      const savedCost = localStorage.getItem("cost") || "";
+      
+      document.getElementById("salePrice").value = savedSale;
+      document.getElementById("cost").value = savedCost;
+      
+      if (savedSale) update();
+    };
+
     async function update() {
       const sale = document.getElementById("salePrice").value;
       const cost = document.getElementById("cost").value || 0;
 
-      if (!sale) return;
+      if (sale) {
+        localStorage.setItem("salePrice", sale);
+        localStorage.setItem("cost", cost);
 
-      await fetch(scriptUrl + "?price=" + sale + "&cost=" + cost);
+        await fetch(scriptUrl + "?price=" + sale + "&cost=" + cost);
 
-      const iframe = document.getElementById("frame");
-      iframe.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + Date.now();
+        const iframe = document.getElementById("frame");
+        iframe.src = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTaw0RrL5tsjG83-C3iEFWYJNLW2KlizBMWv6CHcylWVd262-_TBpgCtTvpRJTy4NXBZcrYc87Db_2U/pubhtml?gid=1364386720&single=true&t=" + Date.now();
+      }
     }
   </script>
 </body>
